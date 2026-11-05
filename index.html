@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WEB бағдарламалау - Силлабус (Электронды кітап)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- PageFlip Library JS -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+
+  <!-- Google Fonts: Inter & Playfair Display -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,800;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+      color: #334155;
+      overflow-x: hidden;
+    }
+    
+    .font-serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* Flipbook Container Styles */
+    .flip-book {
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      background-size: cover;
+      transition: transform 0.3s ease;
+    }
+
+    /* Page styling inside Flipbook */
+    .page {
+      padding: 2.5rem 2rem 2rem 2rem;
+      background-color: #fdfbf7;
+      background-image: linear-gradient(to right, rgba(0,0,0,0.03) 0%, rgba(0,0,0,0) 10%);
+      border: 1px solid #e2e8f0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .page-hard {
+      background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #075985 100%);
+      color: white;
+      border: none;
+    }
+
+    .page-hard-back {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: white;
+    }
+
+    /* Custom Table Styling inside pages */
+    .syllabus-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.72rem;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .syllabus-table th, .syllabus-table td {
+      border: 1px solid #cbd5e1;
+      padding: 5px 7px;
+      text-align: left;
+    }
+
+    .syllabus-table th {
+      background-color: #0284c7;
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.65rem;
+      letter-spacing: 0.05em;
+    }
+
+    .syllabus-table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+
+    .page-header {
+      border-bottom: 2px solid #0284c7;
+      padding-bottom: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .page-footer {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 0.4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Custom scrollbar inside page content if overflow */
+    .page-content {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .page-content::-webkit-scrollbar {
+      width: 4px;
+    }
+    .page-content::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    /* Badge styling */
+    .badge {
+      display: inline-block;
+      padding: 0.2em 0.6em;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: #fff;
+      background-color: #0284c7;
+      border-radius: 0.25rem;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-2 sm:p-6">
+
+  <!-- Top Navigation & Control Bar -->
+  <header class="w-full max-w-6xl flex flex-wrap justify-between items-center gap-4 bg-slate-900/80 backdrop-blur-md border border-slate-700/50 p-4 rounded-2xl shadow-xl text-white mb-4 z-10">
+    <div class="flex items-center gap-3">
+      <div class="bg-sky-500 p-2.5 rounded-xl shadow-lg shadow-sky-500/30">
+        <i class="fa-solid fa-book-bookmark text-xl text-white"></i>
+      </div>
+      <div>
+        <h1 class="font-bold text-lg leading-tight text-slate-100">WEB бағдарламалау</h1>
+        <p class="text-xs text-sky-400 font-medium">Силлабус • С.Сейфуллин атындағы ҚАТЗУ</p>
+      </div>
+    </div>
+
+    <!-- Quick Navigation & TOC Modal Toggle -->
+    <div class="flex items-center gap-2 sm:gap-4 flex-wrap">
+      <button onclick="toggleTOC()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all">
+        <i class="fa-solid fa-list-ul text-sky-400"></i>
+        <span>Мазмұны</span>
+      </button>
+
+      <button onclick="toggleGitHubGuide()" class="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-semibold flex items-center gap-2 shadow-lg shadow-emerald-900/40 transition-all">
+        <i class="fa-brands fa-github text-sm"></i>
+        <span>GitHub-қа сал!</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Interactive 3D Book Area -->
+  <main class="w-full flex-1 flex flex-col justify-center items-center relative my-2">
+    
+    <!-- Flipbook Container -->
+    <div id="book-wrapper" class="relative max-w-full flex justify-center items-center">
+      <div id="syllabus-book" class="flip-book">
+
+        <!-- COVER PAGE (Page 1) -->
+        <div class="page page-hard flex flex-col justify-between p-8 text-center relative overflow-hidden">
+          <div class="absolute -right-12 -top-12 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+          <div class="absolute -left-12 -bottom-12 w-40 h-40 bg-sky-400/20 rounded-full blur-2xl"></div>
+          
+          <div class="border-b-2 border-white/20 pb-4">
+            <p class="text-xs tracking-widest uppercase font-semibold text-sky-200">Қазақстан Республикасы Ауыл Шаруашылығы Министрлігі</p>
+            <h3 class="text-sm font-bold uppercase mt-1 tracking-wide">«С.СЕЙФУЛЛИН АТЫНДАҒЫ ҚАЗАҚ АГРОТЕХНИКАЛЫҚ ЗЕРТТЕУ УНИВЕРСИТЕТІ» КЕАҚ</h3>
+          </div>
+
+          <div class="my-auto py-6">
+            <span class="inline-block px-3 py-1 bg-white/20 backdrop-blur-md rounded-full text-xs font-semibold uppercase tracking-wider mb-3">Силлабус</span>
+            <h1 class="text-3xl font-extrabold font-serif-title text-white tracking-wide leading-tight drop-shadow-md">WEB БАҒДАРЛАМАЛАУ</h1>
+            <p class="text-sm text-sky-100 mt-2">Пәннің жұмыс бағдарламасы</p>
+            <div class="w-16 h-1 bg-sky-300 mx-auto my-4 rounded-full"></div>
+            <p class="text-xs text-sky-200">Білім беру бағдарламасы: <br><span class="font-semibold text-white">6В06101 – «Бағдарламалық инженерия»</span></p>
+          </div>
+
+          <div class="border-t border-white/20 pt-4 text-xs text-sky-100 space-y-1">
+            <p><span class="text-sky-300">Бекітемін:</span> Бизнес және цифрлық технологиялар институтының директоры М.Е.Сабырова</p>
+            <p class="text-sky-300 font-semibold mt-2">Астана, 2026 ж.</p>
+          </div>
+        </div>
+
+        <!-- PAGE 2: ТИТУЛДЫҚ РЕКВИЗИТТЕР & ОҚЫТУШЫ -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">Пән реквизиттері</span>
+            <i class="fa-solid fa-university text-slate-400"></i>
+          </div>
+          <div class="page-content text-xs space-y-3">
+            <div class="bg-sky-50/80 p-3 rounded-lg border border-sky-100">
+              <h4 class="font-bold text-sky-900 mb-1">ЖАЛПЫ МӘЛІМЕТТЕР</h4>
+              <ul class="space-y-1 text-slate-700">
+                <li><b>БББТ тобы:</b> В057 - «Ақпараттық технологиялар»</li>
+                <li><b>Дайындық бағыты:</b> 6B061 - Ақпараттық-коммуникациялық технологиялар</li>
+                <li><b>Курс:</b> 3 | <b>Семестр:</b> 1 | <b>Кредит саны:</b> 5</li>
+                <li><b>Пәндер циклі:</b> БП (Базалық пәндер)</li>
+                <li><b>Бақылау формасы:</b> Емтихан</li>
+              </ul>
+            </div>
+
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th>Сабақ түрі</th>
+                  <th>Сағат саны</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Дәрістер</td><td>15 сағат</td></tr>
+                <tr><td>Зертханалық сабақтар</td><td>30 сағат</td></tr>
+                <tr><td>Өзіндік жұмыс (БӨЖ)</td><td>85 сағат</td></tr>
+                <tr><td>Өзіндік жұмыс оқытушымен (БОӨЖ)</td><td>20 сағат</td></tr>
+                <tr class="font-bold bg-sky-100"><td>БАРЛЫҒЫ</td><td>150 сағат</td></tr>
+              </tbody>
+            </table>
+
+            <div class="bg-amber-50 p-3 rounded-lg border border-amber-200">
+              <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                <i class="fa-solid fa-user-graduate text-amber-600"></i> 1. ОҚЫТУШЫ ЖАЙЛЫ МӘЛІМЕТ
+              </h4>
+              <p class="text-slate-700"><b>Оқытушы:</b> Найзағараева Ақгүл Аманжолқызы</p>
+              <p class="text-slate-700"><b>Дәрежесі:</b> «Ақпараттық жүйелер» БББТ-ның PhD, аға оқытушысы</p>
+              <p class="text-slate-700"><b>Аудиториялар:</b> 2408, 2410, 2406 (кесте бойынша)</p>
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>2</span>
+          </div>
+        </div>
+
+        <!-- PAGE 3: КУРСТЫҢ СИПАТТАМАСЫ & ОҚУ НӘТИЖЕЛЕРІ -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">2. Сипаттама & Нәтижелер</span>
+            <i class="fa-solid fa-bullseye text-slate-400"></i>
+          </div>
+          <div class="page-content text-xs space-y-3">
+            <div>
+              <h4 class="font-bold text-slate-800 uppercase mb-1 text-sky-800">ПӘНДІ ОҚЫТУ МАҚСАТЫ</h4>
+              <p class="text-slate-600 leading-relaxed justify-text">
+                Пәннің мақсаты web-технологиялар негіздері, Интернет желісіне қатынас жасау технологиялары, Интернеттегі web-серверлер, статистикалық және динамикалық web-сайттар, қолданбалы бағдарламалар және программалау арқылы Web-бағдарламалауды жобалау негіздерін үйрету болып табылады.
+              </p>
+            </div>
+
+            <div>
+              <h4 class="font-bold text-slate-800 uppercase mb-1 text-sky-800">ҚАЛЫПТАСАТЫН ОҚУ НӘТИЖЕЛЕРІ (ON)</h4>
+              <div class="space-y-2">
+                <div class="p-2 bg-slate-100 rounded border-l-4 border-sky-500">
+                  <b class="text-sky-700">ON 7:</b> IP протоколдарының 4 және 6 нұсқаларының ерекшеліктерін, IP туннелдерін білу, сайттарды жобалау дағдыларын қалыптастыру.
+                </div>
+                <div class="p-2 bg-slate-100 rounded border-l-4 border-sky-500">
+                  <b class="text-sky-700">ON 8:</b> Браузерлердің гипермәтіндік ақпараттық жүйелерді құру принциптері; клиенттік веб-технологиялар (HTML, CSS, JavaScript, HTML5, Ajax, jQuery, XML); PHP, Frameworks (Yii, Laravel) және SQL/MySQL ДҚБЖ меңгеру.
+                </div>
+                <div class="p-2 bg-slate-100 rounded border-l-4 border-sky-500">
+                  <b class="text-sky-700">ON 10:</b> Академиялық адалдық пен жасанды интеллект (ЖИ) құралдарын этикалық пайдалану талаптарын сақтау, ақпараттың дұрыстығын бағалау.
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <div class="p-2 bg-emerald-50 border border-emerald-200 rounded">
+                <b class="text-emerald-800 block mb-0.5">Пререквизиттер:</b>
+                <span class="text-[0.68rem] text-slate-600">Ақпараттық жүйелер негіздері, Алгоритмдеу, Деректер қоры, ОӨБ.</span>
+              </div>
+              <div class="p-2 bg-indigo-50 border border-indigo-200 rounded">
+                <b class="text-indigo-800 block mb-0.5">Постреквизиттер:</b>
+                <span class="text-[0.68rem] text-slate-600">Мамандандыру пәндері, Курстық жоба, Дипломдық жұмыс.</span>
+              </div>
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>3</span>
+          </div>
+        </div>
+
+        <!-- PAGE 4: 3.1 ДӘРІСТЕР (1-8 АПТА) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">3.1 Дәрістер (1-8 Апта)</span>
+            <i class="fa-solid fa-chalkboard-user text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 12%">Апта</th>
+                  <th>Тақырыбы</th>
+                  <th>Оқыту әдісі</th>
+                  <th style="width: 10%">Сағ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1-апта</td>
+                  <td>Web-бағдарламалау негіздері. Web стандарттары және олардың дамуы.</td>
+                  <td>Ауызша әдістер, пікірталас</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>2-апта</td>
+                  <td>Интернет коммуникациясының моделі. Pull- және Push-моделі.</td>
+                  <td>Ақпараттық-хабарлау</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>3-апта</td>
+                  <td>Қолданушының Интернетке кіруі. «Соңғы миля». Модем.</td>
+                  <td>Ақпараттық-хабарлау</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>4-апта</td>
+                  <td>Интернет жүйесіне қатынасу технологиялары. DSL, ISDN технологиялары.</td>
+                  <td>Түсіндірмелі-иллюстрациялық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>5-апта</td>
+                  <td>Интернеттегі web серверлер. CGI технологиясы. Скриптер.</td>
+                  <td>Түсіндірмелі-иллюстрациялық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>6-апта</td>
+                  <td>Web-парақтарды кэштау. Прокси-сервер механизмі.</td>
+                  <td>Эвристикалық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>7-апта</td>
+                  <td>Интернеттің іздеу технологиялары.</td>
+                  <td>Түсіндірмелі-иллюстрациялық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>8-апта</td>
+                  <td>Интернет сервистері. Электрондық пошта (E-mail) және FTP сервисі.</td>
+                  <td>Эвристикалық</td>
+                  <td>1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>4</span>
+          </div>
+        </div>
+
+        <!-- PAGE 5: 3.1 ДӘРІСТЕР (9-15 АПТА) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">3.1 Дәрістер (9-15 Апта)</span>
+            <i class="fa-solid fa-laptop-code text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 12%">Апта</th>
+                  <th>Тақырыбы</th>
+                  <th>Оқыту әдісі</th>
+                  <th style="width: 10%">Сағ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>9-апта</td>
+                  <td>Файлдармен алмасу. FTP-клиенттер және олардың қызметі.</td>
+                  <td>Эвристикалық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>10-апта</td>
+                  <td>Интернеттегі мәліметтерді қорғау. Цифрлық қолтаңба. Криптография.</td>
+                  <td>Түсіндірмелі-иллюстрациялық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>11-апта</td>
+                  <td>Интернетте пайдаланушыларды идентификациялау. Cookies механизмі.</td>
+                  <td>Эвристикалық</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>12-апта</td>
+                  <td>Бір WEB-парақта фреймдер арқылы құжаттарды орналастыру. HTML формалары.</td>
+                  <td>Оқу пікірталасы</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>13-апта</td>
+                  <td>Стильдердің сатылы кестелері (CSS). CSS қасиеттері мен позициялау.</td>
+                  <td>Мәселелік баяндау, Кейс-стади</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>14-апта</td>
+                  <td>JAVASCRIPT ТІЛІ. Литералдар, айнымалылар, функциялар, DOM объектілері.</td>
+                  <td>Мәселелік баяндау, Кейс-стади</td>
+                  <td>1</td>
+                </tr>
+                <tr>
+                  <td>15-апта</td>
+                  <td>HTTP хаттамасы. PHP ТІЛІ НЕГІЗДЕРІ. Тіл синтаксисі мен операторлары.</td>
+                  <td>Мәселелік баяндау, Кейс-стади</td>
+                  <td>1</td>
+                </tr>
+                <tr class="font-bold bg-sky-100">
+                  <td colspan="3">ЖАЛПЫ ДӘРІС САҒАТЫ</td>
+                  <td>15</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>5</span>
+          </div>
+        </div>
+
+        <!-- PAGE 6: 3.2 ЗЕРТХАНАЛЫҚ САБАҚТАР (1-7 АПТА) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">3.2 Зертханалық (1-7 Апта)</span>
+            <i class="fa-solid fa-flask text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%">Апта</th>
+                  <th>Тақырыбы мен тапсырмасы</th>
+                  <th style="width: 10%">Сағ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1-апта</td>
+                  <td><b>VS Code ортасы:</b> Visual Studio Code бағдарламасын орнату және баптау. Тіркеу жұмысы.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>2-апта</td>
+                  <td><b>HTML негіздері:</b> HTML элементтері, тақырыптар, абзацтар, тізімдер мен сілтемелер.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>3-апта</td>
+                  <td><b>HTML Кестелер:</b> <code>&lt;table&gt;</code>, <code>&lt;tr&gt;</code>, <code>&lt;td&gt;</code> тегтері арқылы кестелік құрылым құру.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>4-апта</td>
+                  <td><b>HTML Тізімдер:</b> Реттелген (ol), реттелмеген (ul) және анықтамалар (dl) тізімдерін жасау.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>5-апта</td>
+                  <td><b>HTML Формалар:</b> Input, select, button элементтері және iFrame құрылымдары.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>6-апта</td>
+                  <td><b>Мультимедиа:</b> <code>&lt;img&gt;</code>, <code>&lt;audio&gt;</code>, <code>&lt;video&gt;</code> тегтерімен жұмыс.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>7-апта</td>
+                  <td><b>CSS-ке кіріспе:</b> CSS синтаксисі, селекторлар, түстер, қаріптер және сыртқы стильдер.</td>
+                  <td>2</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>6</span>
+          </div>
+        </div>
+
+        <!-- PAGE 7: 3.2 ЗЕРТХАНАЛЫҚ САБАҚТАР (8-15 АПТА) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">3.2 Зертханалық (8-15 Апта)</span>
+            <i class="fa-solid fa-code text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 10%">Апта</th>
+                  <th>Тақырыбы мен тапсырмасы</th>
+                  <th style="width: 10%">Сағ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>8-апта</td>
+                  <td><b>CSS Позициялау:</b> Static, relative, absolute, fixed және sticky қасиеттері.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>9-апта</td>
+                  <td><b>CSS Flexbox & Grid:</b> Адаптивті торлы макеттер мен интерфейс құру.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>10-апта</td>
+                  <td><b>JavaScript негіздері:</b> Айнымалылар, деректер типтері, браузерде код орындау.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>11-апта</td>
+                  <td><b>JS Операторлар & Циклдер:</b> Функциялар, шартты операторлар және алгоритмдер.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>12-апта</td>
+                  <td><b>JS DOM-пен жұмыс:</b> DOM элементтерін манипуляциялау, оқиғалар (events).</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>13-апта</td>
+                  <td><b>PHP & XAMPP:</b> Локальды веб-сервер баптау, PHP синтаксисі.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>14-апта</td>
+                  <td><b>PHP Практика:</b> Форма мәліметтерін өңдеу (GET/POST) және веб-скрипттер.</td>
+                  <td>2</td>
+                </tr>
+                <tr>
+                  <td>15-апта</td>
+                  <td><b>PHP + MySQL:</b> XAMPP, HTML тіркелу және жүйеге кіру формасын ДҚ-мен байланыстыру.</td>
+                  <td>2</td>
+                </tr>
+                <tr class="font-bold bg-sky-100">
+                  <td colspan="2">БАРЛЫҒЫ ЗЕРТХАНАЛЫҚ САҒАТ</td>
+                  <td>30</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>7</span>
+          </div>
+        </div>
+
+        <!-- PAGE 8: 3.3 СӨЖ ТАПСЫРМАЛАРЫ (1-6 Тапсырма) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">3.3 СӨЖ Кестесі (1-бөлім)</span>
+            <i class="fa-solid fa-list-check text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 8%">№</th>
+                  <th>СӨЖ Тақырыбы мен Мазмұны</th>
+                  <th>Бақылау формасы</th>
+                  <th style="width: 12%">Мерзім</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Web-технологиялардың даму эволюциясы (Web 1.0, 2.0, 3.0, W3C стандарттары).</td>
+                  <td>Әдебиеттер тізімін тексеру</td>
+                  <td>1-2 апта</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>PHP тілінің негізгі операторлары мен басқарушы конструкциялары.</td>
+                  <td>Жеке тапсырманы тексеру</td>
+                  <td>3-апта</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Тармақталған және циклдік алгоритмдерді PHP-де бағдарламалау.</td>
+                  <td>Жеке тапсырма орындалуы</td>
+                  <td>4-5 апта</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>PHP тілінде бір өлшемді массивтерді өңдеу алгоритмдері.</td>
+                  <td>Кодты тексеру</td>
+                  <td>6-апта</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Екі өлшемді массивтерді өңдеу және файлдармен жұмыс.</td>
+                  <td>ПО ортасында тексеру</td>
+                  <td>7-8 апта</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>PHP-де MySQL деректер қорымен жұмыс істеу функциялары.</td>
+                  <td>ДҚ байланысын тексеру</td>
+                  <td>10-11 апта</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>8</span>
+          </div>
+        </div>
+
+        <!-- PAGE 9: 3.3 СӨЖ ТАПСЫРМАЛАРЫ (7-11 Тапсырма) & 4. ӘДІСТЕР -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">СӨЖ (2-бөлім) & Әдістер</span>
+            <i class="fa-solid fa-graduation-cap text-slate-400"></i>
+          </div>
+          <div class="page-content space-y-3">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th style="width: 8%">№</th>
+                  <th>СӨЖ Тақырыбы</th>
+                  <th>Бақылау формасы</th>
+                  <th style="width: 12%">Мерзім</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>7</td>
+                  <td>GET және POST әдістері арқылы мәліметтерді жіберу.</td>
+                  <td>Модельдеу нәтижелері</td>
+                  <td>12-апта</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>PHP-де Сессиялар (Sessions) және Кукилар (Cookies) құру.</td>
+                  <td>Есептеулер мен код</td>
+                  <td>13-апта</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>PHP-де Объектіге-бағытталған бағдарламалау (ОӨБ), Мұрагерлік.</td>
+                  <td>Кластарды тексеру</td>
+                  <td>14-апта</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>Конструктор, деструктор және әдістерді қайта жүктеу.</td>
+                  <td>Код талдау</td>
+                  <td>15-апта</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="bg-slate-50 p-2.5 rounded border border-slate-200">
+              <h4 class="font-bold text-slate-800 uppercase mb-1 text-[0.7rem] text-sky-800">4. ОҚЫТУДЫҢ НЕГІЗГІ ФОРМАЛАРЫ МЕН ӘДІСТЕРІ</h4>
+              <p class="text-[0.68rem] text-slate-600 leading-normal">
+                Вербальды (дәріс, түсіндіру), көрнекілік, эвристикалық, кейс-стади, проблемалық баяндау, зертханалық жобалар, Platonus жүйесіндегі онлайн тесттер, ағымдық бақылау және коллоквиумдар.
+              </p>
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>9</span>
+          </div>
+        </div>
+
+        <!-- PAGE 10: 5. ӘДЕБИЕТТЕР ТІЗІМІ -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">5. Әдебиеттер тізімі</span>
+            <i class="fa-solid fa-books text-slate-400"></i>
+          </div>
+          <div class="page-content text-[0.68rem] space-y-2">
+            <div>
+              <h5 class="font-bold text-sky-900 border-b border-sky-200 pb-0.5 mb-1">Негізгі әдебиеттер:</h5>
+              <ol class="list-decimal pl-3 space-y-0.5 text-slate-700">
+                <li>Ибрагимов О.М., Нысанов Е.А., Құрақбаев Ж.С. Web-бағдарламалау негіздері. Алматы: TechSmith, 2024. - 248 б.</li>
+                <li>Асылбеков У.Б., Исмаилова А.А. Web-технологиялар. 1-бөлім. Алматы: Бастау, 2019.</li>
+                <li>Асылбеков У.Б., Исмаилова А.А. Web-технологиялар. 2-бөлім. Алматы: Бастау, 2019.</li>
+                <li>Бөрібаев Б., Абдрахманова М. Web-технологиялар: HTML және PHP тілдері. Алматы, 2015.</li>
+                <li>Бөрібаев Б., Абдрахманова М. Web-технологиялар: JavaScript және PHP. Алматы, 2023.</li>
+              </ol>
+            </div>
+
+            <div>
+              <h5 class="font-bold text-sky-900 border-b border-sky-200 pb-0.5 mb-1">Қосымша әдебиеттер:</h5>
+              <ul class="list-disc pl-3 space-y-0.5 text-slate-700">
+                <li>Фримен Э. Изучаем HTML, XHTML и CSS. СПб.: Питер, 2010.</li>
+                <li>Флэнаган Д. JavaScript. Подробное руководство. СПб., 2013.</li>
+                <li>Никсон Р. Создаем динамические веб-сайты с помощью PHP, MySQL, JS, CSS, HTML5. 2019.</li>
+                <li>Хавербеке М. Выразительный JavaScript. СПб.: Питер, 2019.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 class="font-bold text-sky-900 border-b border-sky-200 pb-0.5 mb-1">Электрондық ресурстар:</h5>
+              <ul class="list-disc pl-3 space-y-0.5 text-sky-700 font-mono">
+                <li>MDN Web Docs (developer.mozilla.org)</li>
+                <li>W3Schools Online Web Tutorials (w3schools.com)</li>
+                <li>JavaScript.info (Modern JS Tutorial)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>10</span>
+          </div>
+        </div>
+
+        <!-- PAGE 11: 6. КУРС САЯСАТЫ -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">6. Курс саясаты</span>
+            <i class="fa-solid fa-gavel text-slate-400"></i>
+          </div>
+          <div class="page-content text-xs space-y-2.5">
+            <div class="p-2.5 bg-rose-50 border border-rose-200 rounded text-rose-900">
+              <h4 class="font-bold mb-1 flex items-center gap-1">
+                <i class="fa-solid fa-shield-halved text-rose-600"></i> Академиялық адалдық & ЖИ
+              </h4>
+              <p class="text-[0.68rem] leading-relaxed">
+                Білім алушылар Академиялық адалдық кодексін қатаң сақтауы тиіс. Жасанды интеллект (AI) құралдары университет саясатына сәйкес этикалық түрде тек көмекші құрал ретінде пайдаланылады.
+              </p>
+            </div>
+
+            <div class="p-2.5 bg-amber-50 border border-amber-200 rounded text-amber-900">
+              <h4 class="font-bold mb-1 flex items-center gap-1">
+                <i class="fa-solid fa-clock text-amber-600"></i> Тапсырмаларды тапсыру ережесі
+              </h4>
+              <ul class="list-disc pl-4 text-[0.68rem] space-y-1">
+                <li>Тапсырма уақытылы орындалмаса, әр кешіккен апта үшін балл <b>10%-ға кемітіледі</b>.</li>
+                <li>Тапсырманы 2 аптадан артық кешіктіруге рұқсат етілмейді.</li>
+                <li>Орындалмаған тапсырмаға <b>0 балл</b> қойылады.</li>
+              </ul>
+            </div>
+
+            <div class="p-2 bg-slate-100 rounded text-slate-700 text-[0.68rem]">
+              <b>Платонус ААЖ:</b> Барлық ағымдық және аралық баллдар Платонус жүйесінің электрондық журналына уақытылы енгізіледі.
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>11</span>
+          </div>
+        </div>
+
+        <!-- PAGE 12: 7. БАҒАЛАУ САЯСАТЫ & ФОРМУЛАЛАР -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">7. Бағалау саясаты</span>
+            <i class="fa-solid fa-calculator text-slate-400"></i>
+          </div>
+          <div class="page-content text-xs space-y-3">
+            <p class="text-slate-600 text-[0.7rem]">
+              Студенттердің оқу жетістіктері 100 балдық шкала бойынша бағаланады (1P, 2P rating бақылаулары).
+            </p>
+
+            <div class="bg-sky-50 p-3 rounded-lg border border-sky-200 space-y-2">
+              <h4 class="font-bold text-sky-900 text-xs uppercase">Рейтинг есептеу формулалары:</h4>
+              <div class="bg-white p-2 rounded border border-sky-100 font-mono text-[0.68rem] text-sky-800">
+                1АБ (2АБ) = (Дәріс + Зерт + БӨЖ + БОӨЖ) / n
+              </div>
+              <div class="bg-white p-2 rounded border border-sky-100 font-mono text-[0.68rem] text-sky-800">
+                1Р (2Р) = (Ағымдық бақылау + Аралық бақылау) / 2
+              </div>
+              <div class="bg-white p-2 rounded border border-sky-100 font-mono text-[0.68rem] font-bold text-emerald-700">
+                Құраушы Рейтинг (ҚР) = (1Р + 2Р) / 2
+              </div>
+            </div>
+
+            <div class="p-2 bg-emerald-50 border border-emerald-300 rounded text-emerald-900 text-[0.68rem]">
+              <b>Емтиханға жіберу шарты:</b> Рұқсат беру рейтингі (ҚР) кемінде <b>50%</b> болуы тиіс.
+            </div>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>12</span>
+          </div>
+        </div>
+
+        <!-- PAGE 13: 7.1 БАҒАЛАУ КРИТЕРИЙЛЕРІ (A, B) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">7.1 Бағалау шкаласы (A, B)</span>
+            <i class="fa-solid fa-award text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th>Әріп</th>
+                  <th>Балл</th>
+                  <th>%</th>
+                  <th>Сипаттамасы & Критерийі</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-bold text-emerald-600">A</td>
+                  <td>4.0</td>
+                  <td>95-100</td>
+                  <td>Өте жақсы. Web бағдарламалауды терең меңгерген. HTML5, CSS3, JS, DOM, API, async/await еркін қолданады.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-emerald-600">A-</td>
+                  <td>3.67</td>
+                  <td>90-94</td>
+                  <td>Өте жақсы. Flexbox/Grid, JS, PHP негіздерін толық біледі. Кодты оңтайландыра алады.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-sky-600">B+</td>
+                  <td>3.33</td>
+                  <td>85-89</td>
+                  <td>Жақсы. Адаптивті веб-интерфейс, JS оқиғалары мен функцияларды дұрыс орындайды.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-sky-600">B</td>
+                  <td>3.0</td>
+                  <td>80-84</td>
+                  <td>Жақсы. Тапсырмаларды негізінен дұрыс орындайды, веб-беттердің сыртқы пішінін әдемі безендіреді.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-sky-600">B-</td>
+                  <td>2.67</td>
+                  <td>75-79</td>
+                  <td>Жақсы. Кішігірім қателер болғанымен, негізгі веб-кодтарды өздігінен жаза алады.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>13</span>
+          </div>
+        </div>
+
+        <!-- PAGE 14: 7.1 БАҒАЛАУ КРИТЕРИЙЛЕРІ (C, D, F) -->
+        <div class="page">
+          <div class="page-header flex justify-between items-center">
+            <span class="text-xs font-bold uppercase text-sky-700 tracking-wider">7.1 Бағалау шкаласы (C, D, F)</span>
+            <i class="fa-solid fa-graduation-cap text-slate-400"></i>
+          </div>
+          <div class="page-content">
+            <table class="syllabus-table">
+              <thead>
+                <tr>
+                  <th>Әріп</th>
+                  <th>Балл</th>
+                  <th>%</th>
+                  <th>Сипаттамасы & Критерийі</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="font-bold text-amber-600">C+</td>
+                  <td>2.33</td>
+                  <td>70-74</td>
+                  <td>Қанағаттанарлық. HTML/CSS негізгі құрылымын құрады, JS-те кейбір қиындықтар кездеседі.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-amber-600">C</td>
+                  <td>2.0</td>
+                  <td>65-69</td>
+                  <td>Қанағаттанарлық. Базалық білім бар. Оқытушының көмегін қажет етеді.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-amber-600">C-</td>
+                  <td>1.67</td>
+                  <td>60-64</td>
+                  <td>Қанағаттанарлық. Тұрақты көмекпен қарапайым веб-беттерді құра алады.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-orange-600">D+ / D</td>
+                  <td>1.33-1.0</td>
+                  <td>50-59</td>
+                  <td>Төмен қанағаттанарлық. Код жазуда елеулі қателер жібереді.</td>
+                </tr>
+                <tr>
+                  <td class="font-bold text-rose-600">FX / F</td>
+                  <td>0.5-0</td>
+                  <td>0-49</td>
+                  <td>Қанағаттанарлықсыз. Пән материалын меңгермеген, қайта тапсыру талап етіледі.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="page-footer">
+            <span>Силлабус • WEB бағдарламалау</span>
+            <span>14</span>
+          </div>
+        </div>
+
+        <!-- BACK COVER (Page 15) -->
+        <div class="page page-hard page-hard-back flex flex-col justify-between p-8 text-center relative overflow-hidden">
+          <div class="my-auto space-y-4">
+            <i class="fa-solid fa-laptop-code text-5xl text-sky-400 mb-2"></i>
+            <h2 class="text-2xl font-bold font-serif-title">С.Сейфуллин атындағы ҚАТЗУ</h2>
+            <p class="text-xs text-slate-300">«Бағдарламалық инженерия» білім беру бағдарламасы</p>
+            <div class="w-12 h-0.5 bg-sky-500 mx-auto"></div>
+            <p class="text-xs text-slate-400">Барлық құқықтар қорғалған • 2026 ж.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Controls & Navigation -->
+    <div class="mt-6 flex items-center justify-center gap-4 bg-slate-900/90 border border-slate-700 p-2.5 rounded-full shadow-2xl z-10 backdrop-blur-md">
+      <button onclick="prevPage()" class="w-10 h-10 bg-slate-800 hover:bg-sky-600 text-white rounded-full flex items-center justify-center transition-all shadow-md">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <span class="text-xs font-mono font-semibold text-sky-300 px-3">
+        Бет: <span id="page-num" class="text-white">1</span> / <span id="page-count">15</span>
+      </span>
+
+      <button onclick="nextPage()" class="w-10 h-10 bg-slate-800 hover:bg-sky-600 text-white rounded-full flex items-center justify-center transition-all shadow-md">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+    </div>
+  </main>
+
+  <!-- TOC MODAL -->
+  <div id="toc-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-700 text-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+      <button onclick="toggleTOC()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <h3 class="text-lg font-bold text-sky-400 mb-4 flex items-center gap-2">
+        <i class="fa-solid fa-list text-sky-500"></i> Силлабус мазмұны
+      </h3>
+
+      <div class="space-y-2 text-sm max-h-80 overflow-y-auto pr-2">
+        <button onclick="goToPage(0)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>1. Бас Мұқаба</span> <span class="text-sky-400 text-xs">1 бет</span>
+        </button>
+        <button onclick="goToPage(1)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>2. Оқытушы & Реквизиттер</span> <span class="text-sky-400 text-xs">2 бет</span>
+        </button>
+        <button onclick="goToPage(2)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>3. Мақсаты & Оқу нәтижелері</span> <span class="text-sky-400 text-xs">3 бет</span>
+        </button>
+        <button onclick="goToPage(3)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>4. 3.1 Дәрістер кестесі</span> <span class="text-sky-400 text-xs">4-5 бет</span>
+        </button>
+        <button onclick="goToPage(5)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>5. 3.2 Зертханалық сабақтар</span> <span class="text-sky-400 text-xs">6-7 бет</span>
+        </button>
+        <button onclick="goToPage(7)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>6. 3.3 СӨЖ тапсырмалары</span> <span class="text-sky-400 text-xs">8-9 бет</span>
+        </button>
+        <button onclick="goToPage(9)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>7. 5. Әдебиеттер тізімі</span> <span class="text-sky-400 text-xs">10 бет</span>
+        </button>
+        <button onclick="goToPage(10)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>8. 6. Курс саясаты</span> <span class="text-sky-400 text-xs">11 бет</span>
+        </button>
+        <button onclick="goToPage(11)" class="w-full text-left p-2 rounded hover:bg-slate-800 text-slate-200 flex justify-between">
+          <span>9. 7. Бағалау саясаты & Шкаласы</span> <span class="text-sky-400 text-xs">12-14 бет</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- GITHUB INSTRUCTIONS MODAL -->
+  <div id="github-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm flex justify-center items-center p-4 z-50 hidden">
+    <div class="bg-slate-900 border border-slate-700 text-white rounded-2xl max-w-xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+      <button onclick="toggleGitHubGuide()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+      <h3 class="text-xl font-bold text-emerald-400 mb-3 flex items-center gap-2">
+        <i class="fa-brands fa-github"></i> GitHub Pages-ке орналастыру Нұсқаулығы
+      </h3>
+
+      <div class="space-y-4 text-xs text-slate-300 leading-relaxed">
+        <div class="p-3 bg-slate-800 rounded-lg border border-slate-700">
+          <p class="font-semibold text-emerald-300 mb-1">1-қадам: GitHub-та жаңа репозиторий құру</p>
+          <p>1. <a href="https://github.com" target="_blank" class="text-sky-400 underline">GitHub.com</a> сайтына кіріп, <b>New Repository</b> батырмасын басыңыз.</p>
+          <p>2. Репозиторий атауын жазыңыз (мысалы: <code>web-syllabus-book</code>).</p>
+          <p>3. <b>Public</b> режимін таңдап, <b>Create repository</b> басыңыз.</p>
+        </div>
+
+        <div class="p-3 bg-slate-800 rounded-lg border border-slate-700">
+          <p class="font-semibold text-emerald-300 mb-1">2-қадам: Осы HTML файлын жүктеу</p>
+          <p>1. Репозиторий ішінде <b>Uploading an existing file</b> сілтемесін басыңыз.</p>
+          <p>2. Осы кодты сақтаған <code>index.html</code> файлын сүйреп әкеліп жүктеңіз.</p>
+          <p>3. Төмендегі <b>Commit changes</b> батырмасын басыңыз.</p>
+        </div>
+
+        <div class="p-3 bg-slate-800 rounded-lg border border-slate-700">
+          <p class="font-semibold text-emerald-300 mb-1">3-қадам: GitHub Pages-ті іске қосу</p>
+          <p>1. Репозиторийдің <b>Settings</b> (Баптаулар) бөліміне өтіңіз.</p>
+          <p>2. Сол жақ мәзірден <b>Pages</b> секциясын таңдаңыз.</p>
+          <p>3. <i>Branch</i> бөлімінен <b>main</b> (немесе <b>master</b>) таңдап, <b>Save</b> басыңыз.</p>
+          <p>4. 1-2 минутта сіздің кітабыңыздың сілтемесі дайын болады! (мысалы: <code>https://username.github.io/web-syllabus-book/</code>)</p>
+        </div>
+      </div>
+
+      <div class="mt-5 text-center">
+        <button onclick="toggleGitHubGuide()" class="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 font-bold rounded-xl text-white">
+          Түсінікті!
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript logic for PageFlip initialization -->
+  <script>
+    let pageFlip;
+
+    window.onload = function() {
+      // Initialize PageFlip
+      const pageFlipElement = document.getElementById('syllabus-book');
+
+      // Responsive flipbook sizing
+      let width = window.innerWidth < 640 ? 340 : 420;
+      let height = window.innerWidth < 640 ? 500 : 580;
+
+      pageFlip = new St.PageFlip(pageFlipElement, {
+        width: width,
+        height: height,
+        size: "fixed",
+        minWidth: 300,
+        maxWidth: 500,
+        minHeight: 400,
+        maxHeight: 700,
+        drawShadow: true,
+        showCover: true,
+        usePortrait: true
+      });
+
+      // Load pages
+      pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+      // Event: Page turn
+      pageFlip.on('flip', (e) => {
+        document.getElementById('page-num').innerText = e.data + 1;
+      });
+
+      // Update total page count
+      document.getElementById('page-count').innerText = pageFlip.getPageCount();
+    };
+
+    function nextPage() {
+      if (pageFlip) pageFlip.flipNext();
+    }
+
+    function prevPage() {
+      if (pageFlip) pageFlip.flipPrev();
+    }
+
+    function goToPage(index) {
+      if (pageFlip) {
+        pageFlip.flip(index);
+        toggleTOC();
+      }
+    }
+
+    function toggleTOC() {
+      const modal = document.getElementById('toc-modal');
+      modal.classList.toggle('hidden');
+    }
+
+    function toggleGitHubGuide() {
+      const modal = document.getElementById('github-modal');
+      modal.classList.toggle('hidden');
+    }
+  </script>
+</body>
+</html>
