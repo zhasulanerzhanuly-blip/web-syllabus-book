@@ -131,6 +131,160 @@
     }
   </style>
 </head>
+<style>
+/* ЖАҢА УНИВЕРСИТЕТТІК ДИЗАЙН */
+
+body {
+    background: linear-gradient(
+        135deg,
+        #dbeafe,
+        #f8fafc,
+        #bfdbfe
+    ) !important;
+    color: #1e293b;
+}
+
+/* Жоғарғы мәзір */
+header {
+    background: #ffffff !important;
+    border: 1px solid #dbeafe !important;
+    border-radius: 22px !important;
+    box-shadow: 0 10px 35px #1e40af15 !important;
+    color: #1e3a8a !important;
+}
+
+header h1 {
+    color: #1e3a8a !important;
+}
+
+header p {
+    color: #2563eb !important;
+}
+
+header button {
+    background: #1d4ed8 !important;
+    color: white !important;
+    border: none !important;
+    transition: 0.3s;
+}
+
+header button i {
+    color: white !important;
+}
+
+header button:hover {
+    background: #1e3a8a !important;
+    transform: translateY(-2px);
+}
+
+/* Электрондық кітап */
+.flip-book {
+    box-shadow: 0 25px 60px #1e3a8a35 !important;
+}
+
+/* Кітаптың ішкі беттері */
+.page {
+    background-color: #ffffff;
+    background-image: linear-gradient(
+        90deg,
+        #e2e8f0 0%,
+        #ffffff 7%
+    );
+    border: 1px solid #cbd5e1;
+}
+
+/* Кітаптың бірінші беті */
+.page-hard {
+    background: linear-gradient(
+        145deg,
+        #172554 0%,
+        #1e40af 50%,
+        #0284c7 100%
+    ) !important;
+    color: white !important;
+    border: 5px double #93c5fd !important;
+}
+
+.page-hard h1 {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+    text-shadow: 0 5px 15px #00000040;
+}
+
+/* Кітаптың соңғы мұқабасы */
+.page-hard-back {
+    background: linear-gradient(
+        135deg,
+        #172554,
+        #2563eb
+    ) !important;
+    color: white !important;
+}
+
+/* Кестелер */
+.syllabus-table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.syllabus-table th {
+    background: #1e40af !important;
+    color: white !important;
+}
+
+.syllabus-table td {
+    border-color: #bfdbfe;
+}
+
+.syllabus-table tr:nth-child(even) {
+    background: #eff6ff !important;
+}
+
+.syllabus-table tr:hover {
+    background: #dbeafe !important;
+}
+
+/* Бет тақырыптары */
+.page-header {
+    border-bottom: 3px solid #2563eb;
+    padding-bottom: 10px;
+}
+
+.page-footer {
+    color: #64748b;
+    border-top: 1px solid #bfdbfe;
+}
+
+.badge {
+    background: #2563eb;
+    border-radius: 6px;
+}
+
+/* Айналдыру жолағы */
+.page-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+.page-content::-webkit-scrollbar-thumb {
+    background: #60a5fa;
+    border-radius: 10px;
+}
+
+/* Батырмалар */
+button {
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    filter: brightness(1.08);
+}
+
+::selection {
+    background: #bfdbfe;
+    color: #172554;
+}
+</style>
+
 <body class="min-h-screen flex flex-col justify-between items-center p-2 sm:p-6">
 
   <!-- Top Navigation & Control Bar -->
